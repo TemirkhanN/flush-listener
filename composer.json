@@ -1,0 +1,14 @@
+{
+    "name": "temirkhan/onresponse-flush-listener",
+    "type": "symfony-bundle",
+    "autoload": {
+        "psr-4": {
+            "Temirkhan\\OnresponseFlushListenerBundle\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.0",
+        "symfony/symfony": ">=3.1",
+        "doctrine/orm": "^2.5"
+    }
+}

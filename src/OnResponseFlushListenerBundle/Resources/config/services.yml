@@ -1,0 +1,7 @@
+services:
+    temirkhan_on_response_flush_listener.example:
+        class: Temirkhan\OnResponseFlushListenerBundle\EventListener\OnResponseFlushListener
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: kernel.event_listener, event: kernel.response }
