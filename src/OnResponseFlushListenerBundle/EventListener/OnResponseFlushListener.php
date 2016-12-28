@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Temirkhan\OnResponseFlushListenerBundle\EventListener;
@@ -6,21 +7,28 @@ namespace Temirkhan\OnResponseFlushListenerBundle\EventListener;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
+/**
+ * Transaction mechanism
+ */
 class OnResponseFlushListener
 {
     /**
+     * Doctrine entity manager
+     *
      * @var EntityManager
      */
     private $entityManager;
 
     /**
-     * Флаг для упреждения коммитов
+     * Flag that prevents flushing(committing)
      *
      * @var bool
      */
     private $preventCommit = false;
 
     /**
+     * Constructor
+     *
      * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
@@ -29,7 +37,7 @@ class OnResponseFlushListener
     }
 
     /**
-     * Упреждает коммиты через слушатель любыми путями
+     * Sets flag to prevent flushing for some reason
      */
     public function onTransactionRollback()
     {
@@ -37,7 +45,7 @@ class OnResponseFlushListener
     }
 
     /**
-     * Проводит коммит накопившихся запросов
+     * Flushes all changes if there was no prevention before
      */
     public function onTransactionCommit()
     {
@@ -47,7 +55,7 @@ class OnResponseFlushListener
     }
 
     /**
-     * Проводит коммит транзакции, если код ответа ниже 400
+     * Flushes all changes if there was hernel response with status code lower than 400
      *
      * @param FilterResponseEvent $event
      */
