@@ -1,11 +1,22 @@
 # temirkhan/flush-listener
 Automatically flushes entity manager on valid symfony response status code.
 
-If for some reason you want prevent flushing
-use
+[![Build Status](https://travis-ci.org/TemirkhanN/onresponse-flush-listener.svg?branch=master)](https://travis-ci.org/TemirkhanN/onresponse-flush-listener)
+[![Coverage Status](https://coveralls.io/repos/github/TemirkhanN/onresponse-flush-listener/badge.svg)](https://coveralls.io/github/TemirkhanN/onresponse-flush-listener)
+
+Works with symfony event dispatcher
+> [component](http://symfony.com/doc/current/components/event_dispatcher.html)
+
+To force flushing
 
 ```PHP
-#http://symfony.com/doc/current/components/event_dispatcher.html
+
+$dispatcher->dispatch('transaction.rollback');
+```
+
+To prevent flushing
+
+```PHP
 
 $dispatcher->dispatch('transaction.rollback');
 ```
@@ -31,7 +42,6 @@ class AppKernel extends Kernel
             new Temirkhan\FlushListenerBundle\TemirkhanFlushListenerBundle(),
         ];
     }
-    
 ...
 ```
 
