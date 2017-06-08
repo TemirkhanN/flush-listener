@@ -1,7 +1,7 @@
 # temirkhan/flush-listener
 Automatically flushes entity manager on valid symfony response status code.
 
-[![Build Status](https://travis-ci.org/TemirkhanN/onresponse-flush-listener.svg?branch=master)](https://travis-ci.org/TemirkhanN/onresponse-flush-listener)
+[![Build Status](https://travis-ci.org/TemirkhanN/flush-listener.svg?branch=master)](https://travis-ci.org/TemirkhanN/flush-listener)
 [![Coverage Status](https://coveralls.io/repos/github/TemirkhanN/flush-listener/badge.svg?branch=master)](https://coveralls.io/github/TemirkhanN/flush-listener?branch=master)
 
 Works with symfony event dispatcher
