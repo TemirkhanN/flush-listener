@@ -11,7 +11,7 @@ To force flushing
 
 ```PHP
 
-$dispatcher->dispatch('transaction.rollback');
+$dispatcher->dispatch('transaction.commit');
 ```
 
 To prevent flushing
