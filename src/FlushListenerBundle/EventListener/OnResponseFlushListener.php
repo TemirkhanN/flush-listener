@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Temirkhan\OnResponseFlushListenerBundle\EventListener;
+namespace Temirkhan\FlushListenerBundle\EventListener;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 /**
@@ -13,9 +13,9 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 class OnResponseFlushListener
 {
     /**
-     * Doctrine entity manager
+     * Entity manager
      *
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
@@ -29,15 +29,15 @@ class OnResponseFlushListener
     /**
      * Constructor
      *
-     * @param EntityManager $entityManager
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
     /**
-     * Sets flag to prevent flushing for some reason
+     * Prevents flushing
      */
     public function onTransactionRollback()
     {
@@ -49,13 +49,13 @@ class OnResponseFlushListener
      */
     public function onTransactionCommit()
     {
-        if(!$this->preventCommit){
+        if (!$this->preventCommit) {
             $this->entityManager->flush();
         }
     }
 
     /**
-     * Flushes all changes if there was hernel response with status code lower than 400
+     * Flushes entity manager on kernel response with status code lower than 400
      *
      * @param FilterResponseEvent $event
      */
@@ -67,7 +67,7 @@ class OnResponseFlushListener
 
         $response = $event->getResponse();
 
-        if($response->getStatusCode() < 400){
+        if ($response->getStatusCode() < 400) {
             $this->onTransactionCommit();
         }
     }

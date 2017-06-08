@@ -1,0 +1,9 @@
+services:
+    # Event Listener for kernel response
+    temirkhan.flush_listener.event_listener.flush_on_response:
+        class: Temirkhan\FlushListenerBundle\EventListener\OnResponseFlushListener
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: kernel.event_listener, event: kernel.response }
+            - { name: kernel.event_listener, event: transaction.rollback, method: onTransactionRollback }

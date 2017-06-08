@@ -1,9 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace Temirkhan\OnResponseFlushListenerBundle\EventListener;
+namespace Temirkhan\FlushListenerBundle\EventListener;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ class OnResponseFlushListenerTest extends TestCase
     /**
      * Doctrine entity manager
      *
-     * @var EntityManager|MockObject
+     * @var MockObject|EntityManagerInterface
      */
     private $entityManager;
 
@@ -43,20 +43,20 @@ class OnResponseFlushListenerTest extends TestCase
     private $responseListener;
 
     /**
-     * Environment setting
+     * Environment preset
      */
     protected function setUp()
     {
         parent::setUp();
 
-        $this->entityManager    = $this->createMock(EntityManager::class);
+        $this->entityManager    = $this->createMock(EntityManagerInterface::class);
         $this->event            = $this->createMock(FilterResponseEvent::class);
         $this->response         = $this->createMock(Response::class);
         $this->responseListener = new OnResponseFlushListener($this->entityManager);
     }
 
     /**
-     * Environment clearing
+     * Environment reset
      */
     protected function tearDown()
     {
@@ -115,20 +115,6 @@ class OnResponseFlushListenerTest extends TestCase
     }
 
     /**
-     * Data provider for bad http status codes
-     *
-     * @return array
-     */
-    public function validStatusCodesProvider(): array
-    {
-        return [
-            [100],
-            [200],
-            [300],
-        ];
-    }
-
-    /**
      * Tests behavior on master kernel response with valid status code
      *
      * @param int $statusCode
@@ -160,20 +146,6 @@ class OnResponseFlushListenerTest extends TestCase
     }
 
     /**
-     * Data provider for "ok" http status codes
-     *
-     * @return array
-     */
-    public function invalidStatusCodesProvider(): array
-    {
-        return [
-            [400],
-            [403],
-            [500],
-        ];
-    }
-
-    /**
      * Tests behavior on master kernel response with bad status code
      *
      * @param int $statusCode
@@ -202,5 +174,33 @@ class OnResponseFlushListenerTest extends TestCase
             ->method('flush');
 
         $this->responseListener->onKernelResponse($this->event);
+    }
+
+    /**
+     * "ok" http status codes provider
+     *
+     * @return array
+     */
+    public function invalidStatusCodesProvider(): array
+    {
+        return [
+            [400],
+            [403],
+            [500],
+        ];
+    }
+
+    /**
+     * Bad http status codes provider
+     *
+     * @return array
+     */
+    public function validStatusCodesProvider(): array
+    {
+        return [
+            [100],
+            [200],
+            [300],
+        ];
     }
 }

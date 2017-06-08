@@ -4,12 +4,12 @@
     "type": "symfony-bundle",
     "autoload": {
         "psr-4": {
-            "Temirkhan\\OnResponseFlushListenerBundle\\": "src/OnResponseFlushListenerBundle/"
+            "Temirkhan\\FlushListenerBundle\\": "src/FlushListenerBundle/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Temirkhan\\OnResponseFlushListenerBundle\\": "test/OnResponseFlushListenerBundle/"
+            "Temirkhan\\FlushListenerBundle\\": "test/FlushListenerBundle/"
         }
     },
     "require": {
