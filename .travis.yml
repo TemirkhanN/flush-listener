@@ -3,8 +3,13 @@ php:
   - 7.0
   - 7.1
 
-install:
+before_script:
+  - composer self-update
   - composer install --no-interaction
+  - mkdir -p build/logs
 
 script:
-  - bin/atoum --test-all
+  - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+after_success:
+  - bin/coveralls -v
