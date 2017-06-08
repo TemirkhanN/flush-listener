@@ -1,4 +1,4 @@
-# temirkhan/onresponse-flush-listener
+# temirkhan/flush-listener
 Automatically flushes entity manager on valid symfony response status code.
 
 If for some reason you want prevent flushing
@@ -13,7 +13,7 @@ $dispatcher->dispatch('transaction.rollback');
 
 Install bundle by composer
 
->  composer require temirkhan/on-response-flush-listener
+>  composer require temirkhan/flush-listener
 
 Enable it in your app/AppKernel.php
 
@@ -28,7 +28,7 @@ class AppKernel extends Kernel
     {
         $bundles = [
             ...,
-            new Temirkhan\OnResponseFlushListenerBundle\TemirkhanOnResponseFlushListenerBundle(),
+            new Temirkhan\FlushListenerBundle\TemirkhanFlushListenerBundle(),
         ];
     }
     
@@ -38,4 +38,4 @@ class AppKernel extends Kernel
 This is it. Now when symfony finishes handling request and return response
 entity manager will be flushed based on response status code.
 
-This mechanism mostly suites postgresql.
+This mechanism suites postgresql.

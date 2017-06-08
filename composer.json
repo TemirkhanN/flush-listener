@@ -1,6 +1,6 @@
 {
-    "name": "temirkhan/on-response-flush-listener",
-    "description": "event listener for entity manager flushing on kernel response",
+    "name": "temirkhan/flush-listener",
+    "description": "Entity manager flush listener",
     "type": "symfony-bundle",
     "autoload": {
         "psr-4": {
