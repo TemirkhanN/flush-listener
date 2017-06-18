@@ -36,7 +36,7 @@ class AppKernel extends Kernel
 This is it. Now when symfony finishes handling request and return response
 entity manager will be flushed based on response status code.
 
-To force flushing
+To force flushing event dispatcher shall be used. 
 
 ```PHP
 
@@ -50,4 +50,4 @@ To prevent flushing
 $dispatcher->dispatch('transaction.rollback');
 ```
 
-This mechanism suites postgresql.
+This mechanism best suites postgres.

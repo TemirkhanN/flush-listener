@@ -5,6 +5,6 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
         tags:
-            - { name: kernel.event_listener, event: kernel.response }
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
             - { name: kernel.event_listener, event: transaction.commit, method: onTransactionCommit }
             - { name: kernel.event_listener, event: transaction.rollback, method: onTransactionRollback }

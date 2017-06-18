@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 /**
- * Tests for transaction mechanism listener
+ * Transaction mechanism listener's tests
  */
 class OnResponseFlushListenerTest extends TestCase
 {
@@ -20,20 +20,6 @@ class OnResponseFlushListenerTest extends TestCase
      * @var MockObject|EntityManagerInterface
      */
     private $entityManager;
-
-    /**
-     * On kernel response event
-     *
-     * @var FilterResponseEvent|MockObject
-     */
-    private $event;
-
-    /**
-     * Response being kept in event
-     *
-     * @var Response|MockObject
-     */
-    private $response;
 
     /**
      * Transaction mechanism listener
@@ -50,8 +36,6 @@ class OnResponseFlushListenerTest extends TestCase
         parent::setUp();
 
         $this->entityManager    = $this->createMock(EntityManagerInterface::class);
-        $this->event            = $this->createMock(FilterResponseEvent::class);
-        $this->response         = $this->createMock(Response::class);
         $this->responseListener = new OnResponseFlushListener($this->entityManager);
     }
 
@@ -63,8 +47,6 @@ class OnResponseFlushListenerTest extends TestCase
         parent::tearDown();
 
         $this->entityManager    = null;
-        $this->event            = null;
-        $this->response         = null;
         $this->responseListener = null;
     }
 
@@ -98,12 +80,14 @@ class OnResponseFlushListenerTest extends TestCase
      */
     public function testOnNonMasterKernelResponse()
     {
-        $this->event
+        $event = $this->createFilterResponseEvent();
+
+        $event
             ->expects($this->once())
             ->method('isMasterRequest')
             ->willReturn(false);
 
-        $this->event
+        $event
             ->expects($this->never())
             ->method('getResponse');
 
@@ -111,7 +95,7 @@ class OnResponseFlushListenerTest extends TestCase
             ->expects($this->never())
             ->method('flush');
 
-        $this->responseListener->onKernelResponse($this->event);
+        $this->responseListener->onKernelResponse($event);
     }
 
     /**
@@ -123,17 +107,20 @@ class OnResponseFlushListenerTest extends TestCase
      */
     public function testOnMasterKernelResponse(int $statusCode)
     {
-        $this->event
+        $event    = $this->createFilterResponseEvent();
+        $response = $this->createResponse();
+
+        $event
             ->expects($this->once())
             ->method('isMasterRequest')
             ->willReturn(true);
 
-        $this->event
+        $event
             ->expects($this->once())
             ->method('getResponse')
-            ->willReturn($this->response);
+            ->willReturn($response);
 
-        $this->response
+        $response
             ->expects($this->once())
             ->method('getStatusCode')
             ->willReturn($statusCode);
@@ -142,7 +129,7 @@ class OnResponseFlushListenerTest extends TestCase
             ->expects($this->once())
             ->method('flush');
 
-        $this->responseListener->onKernelResponse($this->event);
+        $this->responseListener->onKernelResponse($event);
     }
 
     /**
@@ -154,17 +141,20 @@ class OnResponseFlushListenerTest extends TestCase
      */
     public function testOnBadMasterKernelResponse(int $statusCode)
     {
-        $this->event
+        $event    = $this->createFilterResponseEvent();
+        $response = $this->createResponse();
+
+        $event
             ->expects($this->once())
             ->method('isMasterRequest')
             ->willReturn(true);
 
-        $this->event
+        $event
             ->expects($this->once())
             ->method('getResponse')
-            ->willReturn($this->response);
+            ->willReturn($response);
 
-        $this->response
+        $response
             ->expects($this->once())
             ->method('getStatusCode')
             ->willReturn($statusCode);
@@ -173,7 +163,7 @@ class OnResponseFlushListenerTest extends TestCase
             ->expects($this->never())
             ->method('flush');
 
-        $this->responseListener->onKernelResponse($this->event);
+        $this->responseListener->onKernelResponse($event);
     }
 
     /**
@@ -202,5 +192,25 @@ class OnResponseFlushListenerTest extends TestCase
             [200],
             [300],
         ];
+    }
+
+    /**
+     * Creates response filtering event
+     *
+     * @return MockObject|FilterResponseEvent
+     */
+    private function createFilterResponseEvent(): FilterResponseEvent
+    {
+        return $this->createMock(FilterResponseEvent::class);
+    }
+
+    /**
+     * Creates response
+     *
+     * @return MockObject|Response
+     */
+    private function createResponse(): Response
+    {
+        return $this->createMock(Response::class);
     }
 }
