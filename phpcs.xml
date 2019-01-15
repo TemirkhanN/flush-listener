@@ -101,7 +101,6 @@
     <rule ref="Squiz.PHP.CommentedOutCode"/>
     <rule ref="Squiz.PHP.DisallowBooleanStatement"/>
     <rule ref="Squiz.PHP.DisallowComparisonAssignment"/>
-    <rule ref="Squiz.PHP.DisallowObEndFlush"/>
     <rule ref="Squiz.PHP.DisallowSizeFunctionsInLoops"/>
     <rule ref="Squiz.PHP.DiscouragedFunctions"/>
     <rule ref="Squiz.PHP.EmbeddedPhp"/>
